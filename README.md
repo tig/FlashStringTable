@@ -5,6 +5,13 @@ This Arduino library simplifies the definition and use of Arduino flash-based
 
 API docs are in `FlashStringTable.h`.
 
+## Install
+
+Via PlatformIO see: https://platformio.org/lib/show/12513/FlashStringTable/installation
+
+Via Arduino IDE use the Library Manager: 
+![image](https://user-images.githubusercontent.com/585482/124662643-f9405600-de5d-11eb-943c-ff75435834d3.png)
+
 ## C Example:
 
 ```c
