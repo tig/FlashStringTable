@@ -1,6 +1,6 @@
 {
   "name": "FlashStringTable",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "This Arduino library simplifies the definition and use of Arduino flash-based (PROGMEM) global string constants. It supports both C and C++ style coding.",
   "keywords": "strings, flash, memory, progmem, arrays, table, F, PSTR, PGM, logging, log, serial, string, kindel",
   "repository": {
