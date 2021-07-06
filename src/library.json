@@ -15,7 +15,7 @@
         "email": "tig@kindel.com",
         "url": "https://www.kindel.com",
         "maintainer": true
-      },
+      }
     ],
     "license": "MIT",
     "homepage": "https://github.com/tig/FlashStringTable.git",

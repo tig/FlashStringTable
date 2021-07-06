@@ -1,6 +1,5 @@
 #include <Arduino.h>
-#include "../include/FlashStringTable.h"
-
+#include <FlashStringTable.h>
 
 BEGIN_FLASH_STRING_TABLE(myFlashStringTable)
     ADD_FLASH_STRING("1")
@@ -8,7 +7,7 @@ BEGIN_FLASH_STRING_TABLE(myFlashStringTable)
     ADD_FLASH_STRING("third")
 END_FLASH_STRING_TABLE()
 
-void Setup() {
+void setup() {
    // NOTE: Call this only once. It scans the string table in flash and
    // assigns pointers to myFlashStringTable's elements. It uses malloc()
    // to allocated myFlashStringTable[].

@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <ArduinoLog.h>
 
-#include "FlashStringTable.h"
-#include "machine.h"
+#include <FlashStringTable.h>
+#include "Machine.h"
 
 void waitForSerial(unsigned long timeout_millis) {
   // Start Serial

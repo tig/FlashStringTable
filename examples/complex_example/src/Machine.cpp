@@ -1,9 +1,8 @@
 #include <Arduino.h>
 #include <ArduinoLog.h>
-// #include <Fsm.h>
 #include <assert.h>
 
-#include "FlashStringTable.h"
+#include <FlashStringTable.h>
 #include "Machine.h"
 
 IMPL_FLASH_STRING_TABLE_CLASS(Machine)
@@ -71,54 +70,31 @@ END_FLASH_STRING_TABLE()
 
 Fsm* g_pfsm = nullptr;
 
-State state1 = {[](void* ctx) {
-                 Piggy* pig = (Piggy*)ctx;
-                 pig->currentState = 1;
-                 Log.traceln("%d on_enter", pig->currentState);
+State state1 = {[]() {
+                 Log.traceln("%d on_enter", 1);
                },
-               [](void* ctx) {
-                 Piggy* pig = (Piggy*)ctx;
-                 pig->currentState = 1;
-                 Log.traceln("%d on_state", pig->currentState);
-                 pig->pfsm->trigger(1, ctx);
+               []() {
+                 Log.traceln("%d on_state", 1);
+                 g_pfsm->trigger(1);
                },
-               [](void* ctx) {
-                 Piggy* pig = (Piggy*)ctx;
-                 pig->currentState = 1;
-                 Log.traceln("%d on_exit", pig->currentState);
+               []() {
+                 Log.traceln("%d on_exit", 1);
                }};
 
 State rgStates[] = {
     // State 1
     state1,
     // State 1
-    {[](void* ctx) {
-       Piggy* pig = (Piggy*)ctx;
-       pig->currentState = 2;
-       Log.traceln("%d on_enter", pig->currentState);
+    {[]() {
+       Log.traceln("%d on_enter", 2);
      },
-     [](void* ctx) {
-       Piggy* pig = (Piggy*)ctx;
-       pig->currentState = 2;
-       Log.traceln("%d on_state", pig->currentState);
-       g_pfsm->trigger(1, ctx);
+     []() {
+       Log.traceln("%d on_state", 2);
+       g_pfsm->trigger(1);
      },
-     [](void* ctx) {
-       Piggy* pig = (Piggy*)ctx;
-       pig->currentState = 2;
-       Log.traceln("%d on_exit", pig->currentState);
+     []() {
+       Log.traceln("%d on_exit", 2);
      }}};
-
-// State state1([](void * ctx) { Log.traceln("1 on_enter"); },
-//              [](void * ctx) {
-//                Log.traceln("1 on_state");
-//                g_pfsm->trigger(1, ctx);
-//              },
-//              []() { Log.traceln("1 on_exit"); });
-
-// State state2([]() { Log.traceln("2 on_enter"); },
-//              []() { Log.traceln("2 on_state"); },
-//              []() { Log.traceln("2 on_exit"); });
 
 Piggy::Piggy() : strings(_progmem_Piggy) {
   pstate = &rgStates[0];
@@ -130,11 +106,11 @@ Piggy::Piggy() : strings(_progmem_Piggy) {
   pfsm->add_transition(&rgStates[1], &rgStates[0], 1, nullptr);
 
   Log.traceln("run_machine");
-  pfsm->run_machine(this);
+  pfsm->run_machine();
   Log.traceln("run_machine");
-  pfsm->run_machine(this);
+  pfsm->run_machine();
   Log.traceln("run_machine");
-  pfsm->run_machine(this);
+  pfsm->run_machine();
 }
 
 size_t Piggy::printTo(Print& p) const { return p.print(strings.getString(3)); };
