@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [examples/c_sample/c_sample.ino, examples/cpp_example/cpp_example.ino, examples/complex_example/main.cpp]
+        example: [examples/c_sample/c_sample.ino, examples/cpp_example/cpp_example.ino, examples/complex_example/src]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pip
+    - name: Cache pip 
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
