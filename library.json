@@ -1,0 +1,26 @@
+{
+    "name": "FlashStringTable",
+    "version": "0.1.0",
+    "description": "This Arduino library simplifies the definition and use of Arduino flash-based (PROGMMEM) global string constants. It supports both C and C++ style coding.",
+    "keywords": "strings, flash, memory, progmem, arrays, table, sprintf_P, F, PSTR, PGM, logging, log, serial, string, kindel",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/tig/FlashStringTable.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Charlie Kindel",
+        "email": "tig@kindel.com",
+        "url": "https://www.kindel.com",
+        "maintainer": true
+      },
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/tig/FlashStringTable.git",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+  }
