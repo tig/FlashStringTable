@@ -1,26 +1,51 @@
 {
-    "name": "FlashStringTable",
-    "version": "0.3.0",
-    "description": "This Arduino library simplifies the definition and use of Arduino flash-based (PROGMEM) global string constants. It supports both C and C++ style coding.",
-    "keywords": "strings, flash, memory, progmem, arrays, table, F, PSTR, PGM, logging, log, serial, string, kindel",
-    "repository":
+  "name": "FlashStringTable",
+  "version": "0.4.0",
+  "description": "This Arduino library simplifies the definition and use of Arduino flash-based (PROGMEM) global string constants. It supports both C and C++ style coding.",
+  "keywords": "strings, flash, memory, progmem, arrays, table, F, PSTR, PGM, logging, log, serial, string, kindel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tig/FlashStringTable.git"
+  },
+  "authors": [
     {
-      "type": "git",
-      "url": "https://github.com/tig/FlashStringTable.git"
+      "name": "Charlie Kindel",
+      "email": "tig@kindel.com",
+      "url": "https://www.kindel.com",
+      "maintainer": true
+    }
+  ],
+  "examples": [
+    {
+      "name": "c_sample",
+      "base": "examples/c_sample",
+      "files": [
+        "c_sample.ino",
+        "platformio.ini"
+      ]
     },
-    "authors":
-    [
-      {
-        "name": "Charlie Kindel",
-        "email": "tig@kindel.com",
-        "url": "https://www.kindel.com",
-        "maintainer": true
-      }
-    ],
-    "license": "MIT",
-    "homepage": "https://github.com/tig/FlashStringTable.git",
-    "dependencies": {
+    {
+      "name": "cpp_sample",
+      "base": "examples/cpp_sample",
+      "files": [
+        "cpp_sample.cpp",
+        "platformio.ini"
+      ]
     },
-    "frameworks": "*",
-    "platforms": "*"
-  }
+    {
+      "name": "complex_example",
+      "base": "examples/ccomplex_example",
+      "files": [
+        "main.cpp",
+        "Machine.cpp",
+        "Machine.h",
+        "platformio.ini"
+      ]
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/tig/FlashStringTable.git",
+  "dependencies": {},
+  "frameworks": "*",
+  "platforms": "*"
+}
