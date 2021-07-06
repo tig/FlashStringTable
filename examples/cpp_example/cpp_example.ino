@@ -19,25 +19,25 @@ class Piggy : public Printable {
     StringTable strings;
 };
 
-void startup() {
+void setup() {
     while (!Serial && !Serial.available()) {}
 
     Piggy piggy;
     
     char sz[256];
-    sprintf_P(sz, F("Piggy has %d strings"), piggy.strings.getNumStrings());
+    sprintf_P(sz, PSTR("Piggy has %d strings"), piggy.strings.getNumStrings());
     Serial.println(sz);
 
 
-    Serial.print(F("Piggy's printTo() says: "));
+    Serial.print(PSTR("Piggy's printTo() says: "));
     Serial.println(piggy);
 
-    Serial.print(F("Piggy's strings: "));
+    Serial.print(PSTR("Piggy's strings: "));
     for (uint16_t i = 0; i < piggy.strings.getNumStrings(); i ++){
-        sprintf_P(sz, F("%d = %s, "), i, piggy.strings.getString(i));
+        sprintf_P(sz, PSTR("%d = %s, "), i, piggy.strings.getString(i));
         Serial.print(sz);
     }
-    Serial.println(F("Done!"));
+    Serial.println(PSTR("Done!"));
 }
 
 void loop() {}
