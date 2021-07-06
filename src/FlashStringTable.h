@@ -31,7 +31,7 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
 
 /**
  * @brief These macros simplify definition and use of Arduino flash-based
- * (PROGMMEM) global string constants. There is a small startup cost to using
+ * (PROGMEM) global string constants. There is a small startup cost to using
  * these as each table of strings is parsed by the `INIT_FLASH_STRING_TABLE`
  * macro to fill in the table of __FlashStringHelper* pointers.
  *

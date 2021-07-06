@@ -1,7 +1,7 @@
 # FlashStringTable - A simple way of storing and accessing strings in flash memory for Arduino
 
 This Arduino library simplifies the definition and use of Arduino flash-based
-(PROGMMEM) global string constants. It supports both `C` and `C++` style coding.
+(PROGMEM) global string constants. It supports both `C` and `C++` style coding.
 
 API docs are in `FlashStringTable.h`.
 
