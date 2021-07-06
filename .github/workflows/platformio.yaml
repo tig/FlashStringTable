@@ -30,6 +30,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade platformio
     - name: Run PlatformIO
-      run: pio ci --board=uno --lib=../../../FlashStringTable/src
+      run: pio ci --board=uno --lib=../../src
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
