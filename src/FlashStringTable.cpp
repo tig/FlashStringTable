@@ -53,5 +53,3 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size) {
   return table;
 }
 
-const __FlashStringHelper** StringTable::_pstrings;
-uint16_t StringTable::_nstrings;

@@ -39,8 +39,24 @@ void setup() {
     Log.traceln("entry %d = '%S'", i, myFlashStringTable[i]);
   }
 
-  Log.traceln("StringTable!");
+  Log.traceln("Machine!");
+  Machine machine;
+  machine.begin();
+  Log.traceln("Machine printTo: %p ", machine);
+  Log.traceln("Machine State Strings: %d [0] = %S", machine.stateStrings.getNumStrings(), machine.stateStrings.getString(0));
+  Log.traceln("Machine State printTo: %p ", machine.stateStrings);
+  for (uint16_t i = 0; i < machine.stateStrings.getNumStrings(); i ++){
+    Log.trace("%d = %S, ", i, machine.stateStrings.getString(i));
+  }
+  Log.traceln("");
+  Log.traceln("Machine Trigger Strings: %d [0] = %S", machine.triggerStrings.getNumStrings(), machine.triggerStrings.getString(0));
+  Log.traceln("Machine Trigger printTo: %p", machine.triggerStrings);
+  for (uint16_t i = 0; i < machine.triggerStrings.getNumStrings(); i ++){
+    Log.trace("%d = %S, ", i, machine.triggerStrings.getString(i));
+  }
+  Log.traceln("");
 
+  Log.traceln("StringTable!");
   StringTable st(_progmem_myFlashStringTable);
     for (uint16_t i = 0; i < st.getNumStrings(); i ++){
     Log.trace("%d = %S, ", i, st.getString(i));
@@ -68,15 +84,12 @@ void setup() {
   }
   Log.traceln("");
 
-  // //Log.traceln("Machine Status: %S", m.getStatusString());
 
-  // Log.traceln("Machine Status: %S", m.getStatusString());
+
   Log.traceln("Done!");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  assert(0);
 }
 
 // handle diagnostic informations given by assertion and abort program
@@ -93,5 +106,5 @@ void __assert(const char* __func, const char* __file, int __lineno,
 
   // abort program execution.
   Serial.flush();
-  abort();
+  // abort();
 }

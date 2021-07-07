@@ -225,6 +225,6 @@ class StringTable : public Printable {
   };
 
  private:
-  static const __FlashStringHelper** _pstrings;
-  static uint16_t _nstrings;
+  const __FlashStringHelper** _pstrings;
+  uint16_t _nstrings;
 };

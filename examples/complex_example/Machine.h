@@ -2,27 +2,53 @@
 
 #include <Arduino.h>
 #include <Fsm.h>
+#include <FlashStringTable.h>
 
-BEGIN_FLASH_STRING_TABLE_CLASS(Machine)
-ADD_FLASH_STRING("Started")
-ADD_FLASH_STRING("Stopped")
-ADD_FLASH_STRING("Error")
+BEGIN_FLASH_STRING_TABLE_CLASS(SystemStates)
+ADD_FLASH_STRING("error")
+END_FLASH_STRING_TABLE()
+
+BEGIN_FLASH_STRING_TABLE_CLASS(SystemTriggers)
+ADD_FLASH_STRING("None")
 END_FLASH_STRING_TABLE()
 
 /**
  * @brief Abstract (pure v) base class for subystems that are run by a state machine.
  *
  */
-class Machine : public StringTable {
+class Machine : public Printable {
  public:
-  enum States { Started, Stopped, Error };
+  /**
+ * @brief The states the Machine's FSM can be in. Must have the same
+ * number of items as stateStrings[]
+ * 
+ */
+  enum States
+  { error };
 
- public:
-  Machine() : _state(Error), _trigger(0) {
-    INIT_FLASH_STRING_TABLE_CLASS(Machine, States::Error + 1);
-  };
+  /**
+ * @brief The events that can trigger the Machine FSM to transition to another state.
+ *  Must have the same number of items as stateStrings[]
+ * 
+ */
+  enum Triggers
+  { None };
 
-  Machine(States initialState) : Machine() { _state = initialState; };
+  Machine();
+  Machine(States initialState)
+      : Machine() { _state = initialState; };
+
+  /**
+   * @brief Flash-memory based strings for the States
+   * 
+   */
+  StringTable stateStrings;
+
+  /**
+   * @brief Flash-memory based strings for the States
+   * 
+   */
+  StringTable triggerStrings;
 
  public:
   /**
@@ -40,66 +66,77 @@ class Machine : public StringTable {
    * `runMachine` is called from `loop()`.
    *
    */
-  // virtual void runStateMachines();
+  virtual void runStateMachines();
 
-  // Sets the trigger of the next state to transition to
-  // Trigger::None (-1) means stay in current state.
-  // virtual void setTrigger(int trigger);
+  /**
+   * @brief Set the Trigger objectSets the trigger of the next state to transition to. 
+   * The trigger will happen async. Trigger::None means stay in current state.
+   * 
+   * @param trigger 
+   */
+  virtual void setTrigger(Triggers trigger);
 
   /**
    * @brief Set the Current State object - Used for diagnostics; called from
    * on_enter of each state in statemachine
    *
-   * @param stateName
+   * @param state
    */
-  virtual void setCurrentState(const __FlashStringHelper* stateName);
-
-  // Do processing; called via on_state for states that depend
-  // on system. Generally updates status.
-  // virtual int process();
+  virtual void setCurrentState(States state);
 
   /**
-   * @brief Returns current (cached status) of the machine
+   * @brief Do machine work while in a state (to be called from `on_state` handlers).
+   * 
+   * @param currentState - passed as a convenience so on_state doesn't have to call getState().
+   * @return Trigger - a trigger for a state transition. The `on_state` will then use this to
+   * initate a state transition (by calling the appropriate `setTrigger()`)
+   */
+  virtual Triggers process(States currentState);
+
+  /**
+   * @brief Returns current (cached) state of the machine
    *
-   * @return int
+   * @return States
    */
   virtual States getState();
 
   /**
-   * @brief Returns current (cached status) of the machine as a string. For
-   * diagnostics. Same string that `printTo()` will generate.
-   *
-   * @return const __FlashStringHelper*
-   */
-  virtual const __FlashStringHelper* getStateString() = 0;
-
-  /**
-   * @brief `Printable::printTo` - prints the current State
+   * @brief `Printable::printTo` - prints the current State & Trigger
+   * 'State(Trigger)'
    *
    * @param p
    * @return size_t
    */
-  virtual size_t printTo(Print& p) const { return 0; };
+  virtual size_t printTo(Print& p) const;
 
  private:
-  DECLARE_FLASH_STRING_TABLE_CLASS(Machine);
-
   /**
    * @brief Current state of the machine
    *
    */
-  States _state;
+  Machine::States _state;
 
   /**
    * @brief Set by a state machine function to trigger next state
    *
    */
-  int _trigger;
+  Machine::Triggers _trigger;
 
-  // Fsm* _pfsm;
-  // State* _states;
+  State* _rgStates;// = g_rgSystemStates;
+  Fsm* _pfsm;
   // const char* _f_[];
 };
+
+//static State *g_rgSystemStates; //[Machine::States::error + 1];// = {
+
+BEGIN_FLASH_STRING_TABLE_CLASS(BeakerStates)
+ADD_FLASH_STRING("error1")
+END_FLASH_STRING_TABLE()
+
+BEGIN_FLASH_STRING_TABLE_CLASS(BeakerTriggers)
+ADD_FLASH_STRING("None2")
+END_FLASH_STRING_TABLE()
+
 
 BEGIN_FLASH_STRING_TABLE_CLASS(Beaker)
 ADD_FLASH_STRING("Z")
@@ -149,3 +186,4 @@ class Piggy : public Printable{
     State* pstate;
     int currentState;
 };
+
