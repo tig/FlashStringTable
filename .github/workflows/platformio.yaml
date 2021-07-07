@@ -1,6 +1,6 @@
 name: PlatformIO CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -12,6 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: arduino/arduino-lint-action@v1
+      with:
+        library-manager: update
+        compliance: strict
     - name: Cache pip 
       uses: actions/cache@v2
       with:
