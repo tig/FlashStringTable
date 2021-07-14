@@ -27,7 +27,7 @@ uint16_t getTableSize(PGM_P p);
  * @param size - number of strings expected. The reulsting array will be [size]
  * elements
  */
-const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
+const __FlashStringHelper **createStringTable(PGM_P p, uint16_t size);
 
 /**
  * @brief These macros simplify definition and use of Arduino flash-based
@@ -67,7 +67,7 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  *
  */
 #define BEGIN_FLASH_STRING_TABLE(string_table_name) \
-  __FlashStringHelper** string_table_name;          \
+  __FlashStringHelper **string_table_name;          \
   const char _progmem_##string_table_name[] PROGMEM =
 
 /**
@@ -105,13 +105,13 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  * Call this near program start. Call it only once.
  *
  */
-#define INIT_FLASH_STRING_TABLE(string_table_name)                      \
-  static uint16_t string_table_name##_size = 0;                         \
-  {                                                                     \
-    PGM_P p = reinterpret_cast<PGM_P>(_progmem_##string_table_name);    \
-    string_table_name##_size = getTableSize(p);                         \
-    string_table_name =                                                 \
-        (__FlashStringHelper**)createStringTable(p, string_table_name##_size); \
+#define INIT_FLASH_STRING_TABLE(string_table_name)                              \
+  static uint16_t string_table_name##_size = 0;                                 \
+  {                                                                             \
+    PGM_P p = reinterpret_cast<PGM_P>(_progmem_##string_table_name);            \
+    string_table_name##_size = getTableSize(p);                                 \
+    string_table_name =                                                         \
+        (__FlashStringHelper **)createStringTable(p, string_table_name##_size); \
   }
 
 /**
@@ -124,14 +124,15 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  *
  */
 #define DECLARE_FLASH_STRING_TABLE_CLASS(classname)                       \
- public:                                                                  \
-  virtual const __FlashStringHelper* getString(uint16_t i) const {        \
+public:                                                                   \
+  virtual const __FlashStringHelper *getString(uint16_t i) const          \
+  {                                                                       \
     return _pstrings##classname[i];                                       \
   }                                                                       \
   virtual uint16_t getNumStrings() const { return _nstrings##classname; } \
                                                                           \
- private:                                                                 \
-  static const __FlashStringHelper** _pstrings##classname;                \
+private:                                                                  \
+  static const __FlashStringHelper **_pstrings##classname;                \
   static uint16_t _nstrings##classname;
 
 /**
@@ -139,7 +140,7 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  *
  */
 #define IMPL_FLASH_STRING_TABLE_CLASS(classname)                \
-  const __FlashStringHelper** classname ::_pstrings##classname; \
+  const __FlashStringHelper **classname ::_pstrings##classname; \
   uint16_t classname ::_nstrings##classname = 0;
 
 /**
@@ -154,11 +155,12 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  *
  */
 #define INIT_FLASH_STRING_TABLE_CLASS(classname, verify_count) \
-  if (classname ::_nstrings##classname == 0) {                 \
+  if (classname ::_nstrings##classname == 0)                   \
+  {                                                            \
     PGM_P p = reinterpret_cast<PGM_P>(_progmem_##classname);   \
     classname ::_nstrings##classname = getTableSize(p);        \
     classname ::_pstrings##classname =                         \
-        (const __FlashStringHelper**)createStringTable(               \
+        (const __FlashStringHelper **)createStringTable(       \
             p, classname ::_nstrings##classname);              \
     assert(classname ::_nstrings##classname == verify_count);  \
   }
@@ -173,16 +175,31 @@ const __FlashStringHelper** createStringTable(PGM_P p, uint16_t size);
  * `StringTable myStrings(_progman_MyStrings)`.
  *
  */
-class StringTable : public Printable {
- public:
-  StringTable(const char* pprogmem) : StringTable() {
-    PGM_P p = reinterpret_cast<PGM_P>(pprogmem);
-    _nstrings = getTableSize(p);
-    _pstrings = (const __FlashStringHelper**)createStringTable(p, _nstrings);
+class StringTable : public Printable
+{
+public:
+  StringTable(const char *pprogmem) : StringTable()
+  {
+    init(pprogmem);
   }
-  StringTable() {
+  StringTable()
+  {
     _nstrings = 0;
     _pstrings = nullptr;
+  }
+
+  /**
+   * @brief Initialize the StringTablee from a PROGMEM buffer. The
+   * flash memory pointed to by `pprogmem` must be a doubly-null-terminated
+   * buffer of null-terminaed strings.
+   * 
+   * @param pprogmem 
+   */
+  void init(const char *pprogmem)
+  {
+    PGM_P p = reinterpret_cast<PGM_P>(pprogmem);
+    _nstrings = getTableSize(p);
+    _pstrings = (const __FlashStringHelper **)createStringTable(p, _nstrings);
   }
 
   /**
@@ -195,7 +212,8 @@ class StringTable : public Printable {
    * @param i zero-based index into string table
    * @return const __FlashStringHelper*
    */
-  virtual const __FlashStringHelper* getString(uint16_t i) const {
+  virtual const __FlashStringHelper *getString(const uint16_t i) const
+  {
     return _pstrings[i];
   }
 
@@ -213,18 +231,21 @@ class StringTable : public Printable {
    * @param p
    * @return size_t
    */
-  size_t printTo(Print& p) const {
+  size_t printTo(Print &p) const
+  {
     uint16_t n = 0;
-    for (uint16_t i = 0; i < _nstrings; i++) {
+    for (uint16_t i = 0; i < _nstrings; i++)
+    {
       n += p.print(_pstrings[i]);
-      if (i + 1 != _nstrings) {
+      if (i + 1 != _nstrings)
+      {
         n += p.print(", ");
       }
     }
     return n;
   };
 
- private:
-  const __FlashStringHelper** _pstrings;
+private:
+  const __FlashStringHelper **_pstrings;
   uint16_t _nstrings;
 };

@@ -8,7 +8,7 @@ BEGIN_FLASH_STRING_TABLE_CLASS(Piggy)
     ADD_FLASH_STRING("Kermit")
     ADD_FLASH_STRING("The")
     ADD_FLASH_STRING("Frog")
-    ADD_FLASH_STRING("!")
+    ADD_FLASH_STRING("!!")
 END_FLASH_STRING_TABLE()
 
 class Piggy : public Printable {
@@ -20,7 +20,10 @@ class Piggy : public Printable {
 };
 
 void setup() {
+    Serial.begin(57600);
     while (!Serial && !Serial.available()) {}
+    delay(500);
+    Serial.println(F("cpp_sample running..."));
 
     Piggy piggy;
     
@@ -29,15 +32,17 @@ void setup() {
     Serial.println(sz);
 
 
-    Serial.print(PSTR("Piggy's printTo() says: "));
+    Serial.print("Piggy's printTo() says: ");
     Serial.println(piggy);
 
-    Serial.print(PSTR("Piggy's strings: "));
+    Serial.print(F("Piggy's strings: "));
     for (uint16_t i = 0; i < piggy.strings.getNumStrings(); i ++){
-        sprintf_P(sz, PSTR("%d = %s, "), i, piggy.strings.getString(i));
-        Serial.print(sz);
+        char szTemp[50];
+        strcpy_P(szTemp,  (PGM_P)piggy.strings.getString(i));
+        sprintf_P(sz, PSTR("%d = %s"), i, szTemp);
+        Serial.println(sz);
     }
-    Serial.println(PSTR("Done!"));
+    Serial.println(F("Done!"));
 }
 
 void loop() {}
