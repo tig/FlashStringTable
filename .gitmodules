@@ -1,0 +1,6 @@
+[submodule "libs/arduino-fsm"]
+	path = libs/arduino-fsm
+	url = tig:tig/arduino-fsm
+[submodule "arduino-fsm"]
+	path = arduino-fsm
+	url = tig:tig/arduino-fsm
