@@ -26,7 +26,7 @@ END_FLASH_STRING_TABLE()
   }
 
 /**
- * @brief Shortcut for ensuring a on_enter function can be setup/traced easily. Includes calling stateChanged().
+ * @brief Shortcut for ensuring a on_enter function can be setup/traced easily. 
  * e.g. TRACE_STATE_FN(MainMachine, true);
  * 
  * @param machine classname of the `Machine` subclass.
@@ -36,8 +36,7 @@ END_FLASH_STRING_TABLE()
   machine& temp##machine = machine::getInstance();                                                                        \
   if (trace) {                                                                                                            \
     Log.traceln(F(#machine " %S state - on_enter"), temp##machine._stateStrings.getString(temp##machine.getCurrentState())); \
-  }                                                                                                                       \
-  temp##machine.stateChanged(temp##machine.getCurrentState());
+  }                                                                                                                       
 
 // Because c/c++ does not support polymorhpic enums we can't really pass our nice
 // enums around strongly typed. So we just an int. And silly defines to make the code
@@ -162,22 +161,14 @@ class Machine : public Printable {
    */
   virtual void setTrigger(TriggerType trigger);
 
-  /**
-   * @brief Indicates that the state has changed.
-   * Used for diagnostics; called from on_enter of each state in statemachine
-   *
-   * @param state
-   */
-  virtual void stateChanged(StateType state);
-
-  /**
+    /**
    * @brief Do machine work while in a state (to be called from `on_state` handlers).
    * 
    * @param stateCalling - passed as a convenience so on_state doesn't have to call getState().
    * @return Trigger - a trigger for a state transition. The `on_state` will then use this to
    * initate a state transition (by calling the appropriate `setTrigger()`)
    */
-  virtual TriggerType process(StateType stateCalling = Machine::States::error);
+  virtual TriggerType on_state(StateType stateCalling = Machine::States::error);
 
   /**
    * @brief `Printable::printTo` - prints the current State & Trigger

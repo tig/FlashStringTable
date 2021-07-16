@@ -102,13 +102,13 @@ bool Machine::begin() {
   _rgpStates[error] = new State(
       []() {
         TRACE_STATE_FN(Machine, on_enter, true);
-      },
+  },
       []() {
         TRACE_STATE_STATE_FN(Machine, false);
-      },
+  },
       []() {
         TRACE_STATE_FN(Machine, on_exit, true);
-      });
+  });
 
   setStartState(error);
 
@@ -142,26 +142,18 @@ void Machine::runSubMachines() {
 void Machine::setTrigger(TriggerType trigger) {
   assert(_rgpStates != nullptr);
   assert(_pFsm != nullptr);
-  //Log.traceln(F("Machine::setTrigger(%S)"), _triggerStrings.getString(trigger));
+  //Log.traceln(F("Machine - triggering \"%S\""), _triggerStrings.getString(trigger));
   // Trigger a state transition (asynchronously)
   // TODO: Redraw dispay?
 
   _trigger = trigger;
 }
 
-void Machine::stateChanged(StateType state) {
-  assert(_rgpStates != nullptr);
-  assert(_pFsm != nullptr);
-  // For diagnostics
-
-  // TODO: Redraw dispay
-}
-
-TriggerType Machine::process(StateType stateCalling) {
+TriggerType Machine::on_state(StateType stateCalling) {
   assert(_rgpStates != nullptr);
   assert(_pFsm != nullptr);
 
-  Log.traceln(F("Machine::process(%S)"), _stateStrings.getString(stateCalling));
+  Log.traceln(F("Machine::on_state(%S)"), _stateStrings.getString(stateCalling));
   // Handle work (from on_state). Return new state transition trigger (or None)
   // DO NOT set trigger or call setTrigger(); the calling on_state will do so
   TriggerType trigger = Triggers::None;

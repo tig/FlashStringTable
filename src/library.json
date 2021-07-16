@@ -22,14 +22,14 @@
       "files": [
         "c_sample.ino"
       ]
-    },
+  },
     {
       "name": "cpp_sample",
       "base": "examples/cpp_sample",
       "files": [
         "cpp_sample.cpp"
       ]
-    },
+  },
     {
       "name": "complex_example",
       "base": "examples/ccomplex_example",
